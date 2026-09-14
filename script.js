@@ -1,3 +1,6 @@
+let digitA = 0;
+let digitB = null;
+
 function addNumbers(a, b) {
     return a + b
 }
@@ -39,4 +42,45 @@ function truncateNumber (number, digits = 10) {
     const numberDigits = number.toString().replace(".", "").length
     if (numberDigits > digits) { return sign * number.toExponential(digits - 1) }
     else { return sign * number }
+}
+
+const display = document.querySelector("#display")
+const digitsInput = document.querySelectorAll(".digit")
+
+digitsInput.forEach((item) => {
+    item.addEventListener('click', (event) => {enterDigit(event)})
+})
+
+const clearScreen = document.querySelector("#clear")
+clearScreen.addEventListener('click', allClear);
+
+const clearLast = document.querySelector("#backspace")
+clearLast.addEventListener("click", clearLastDigit)
+
+
+function enterDigit (event) {
+    display.textContent = display.textContent == 0 ? event.currentTarget.textContent : display.textContent + event.currentTarget.textContent
+}
+
+function allClear () {
+    display.textContent = 0;
+}
+
+function clearLastDigit () {
+
+    let numberInput = display.textContent
+    // if already 0 do nothing 
+
+
+    numberInput = numberInput.slice(0, -1)
+    // if last character is a "." remove also
+    let last = numberInput.slice(numberInput.length - 1)
+    if (last == ".") { numberInput = numberInput.slice(0, -1) }
+
+    if (numberInput === '') {
+        display.textContent = 0;
+    }
+    else {
+        display.textContent = numberInput
+    }
 }
