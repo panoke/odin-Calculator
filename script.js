@@ -1,5 +1,7 @@
-let digitA = 0;
-let digitB = null;
+const maxDisplayDigits = 10;
+let queuedValueA = null;
+let queuedValueB = null;
+let queuedOperator = null;
 
 function addNumbers(a, b) {
     return a + b
@@ -22,11 +24,12 @@ function truncateNumber (number, digits = 10) {
 
     // check that digits value is positive integer
     if(!Number.isInteger(digits) || digits <= 0) {
-        throw new Error("Digits must be a positive integer.");
+        console.error("Digits must be a positive integer.");
+        return "Calculation Error"
     }
 
     // if not a number return and stop processing
-    if (Number.isNaN(number)) { return NaN };
+    if (Number.isNaN(number)) { return "Non number entered" };
 
     // if number is not finite return as is as cannot process
     if (!Number.isFinite(number)) { return number }
@@ -44,11 +47,16 @@ function truncateNumber (number, digits = 10) {
     else { return sign * number }
 }
 
-const display = document.querySelector("#display")
+const calculatorDisplay = document.querySelector("#display")
 const digitsInput = document.querySelectorAll(".digit")
+const operatorsInput = document.querySelectorAll(".operator")
 
 digitsInput.forEach((item) => {
     item.addEventListener('click', (event) => {enterDigit(event)})
+})
+
+operatorsInput.forEach((item) => {
+    item.addEventListener('click', (event) => {enterOperator(event)})
 })
 
 const clearScreen = document.querySelector("#clear")
@@ -58,29 +66,115 @@ const clearLast = document.querySelector("#backspace")
 clearLast.addEventListener("click", clearLastDigit)
 
 
+// called by pressing one of the digit buttons, including "."
 function enterDigit (event) {
-    display.textContent = display.textContent == 0 ? event.currentTarget.textContent : display.textContent + event.currentTarget.textContent
+    let userInput = event.currentTarget.textContent
+    let currentDisplay = calculatorDisplay.textContent
+
+    // if text on screen reset
+    if (isNaN(currentDisplay)) {
+        currentDisplay = 0;
+    }
+
+    if (userInput === '.' && currentDisplay.includes(".")) {
+        console.error("Attempted to enter two decimal points");
+    }
+    else {
+        calculatorDisplay.textContent = currentDisplay == 0 ? userInput : currentDisplay + userInput;
+    }
+
+    // determine if decimal point should be enabled or disabled
+    controlDecimalButton();
 }
 
+// called by pressing one of the Operators buttons
+function enterOperator(event) {
+    const operatorAction = event.currentTarget.value;
+    console.log(`start queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)
+
+    if (queuedValueA !== null) {
+        queuedValueB = parseFloat(calculatorDisplay.textContent);
+        let calculatedValue = calculateInput(queuedValueA, queuedValueB, queuedOperator)
+        calculatorDisplay.textContent = calculatedValue;
+        
+        queuedValueA = calculatedValue;
+        queuedValueB = null;
+        queuedOperator = null;
+    }
+    else if (queuedValueA === null) {
+        queuedValueA = parseFloat(calculatorDisplay.textContent);
+        calculatorDisplay.textContent = "0";
+        queuedOperator = operatorAction === "=" ? null : operatorAction;
+    }
+
+    // determine if decimal point should be enabled or disabled
+    controlDecimalButton();
+
+    console.log(`end queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)
+}
+
+function calculateInput (valueA, valueB, valueOperator)
+{
+    switch(valueOperator) {
+        case "+":
+            return valueA + valueB;
+            break;
+        case "-":
+            return valueA - valueB;
+            break;
+        case "*":
+            return valueA * valueB;
+            break;
+        case "/":
+            return valueA / valueB;
+            break;
+        case "=":
+            return calculateInput(valueA, valueB, queuedOperator)
+            break;
+        default:
+            return "Error"
+    }
+}
+
+// called from pressing AC button
 function allClear () {
-    display.textContent = 0;
+    calculatorDisplay.textContent = 0;
+    queuedValueA = null;
+    queuedValueB = null;
+    queuedOperator = null;
+
+    // determine if decimal point should be enabled or disabled
+    controlDecimalButton();
 }
 
+
+// called from pressing backspace button
 function clearLastDigit () {
-
-    let numberInput = display.textContent
-    // if already 0 do nothing 
-
+    let numberInput = calculatorDisplay.textContent
 
     numberInput = numberInput.slice(0, -1)
     // if last character is a "." remove also
     let last = numberInput.slice(numberInput.length - 1)
     if (last == ".") { numberInput = numberInput.slice(0, -1) }
 
+    // if no characters remaining set to 0
     if (numberInput === '') {
-        display.textContent = 0;
+        calculatorDisplay.textContent = 0;
     }
     else {
-        display.textContent = numberInput
+        calculatorDisplay.textContent = numberInput
+    }
+
+    // determine if decimal point should be enabled or disabled
+    controlDecimalButton();
+}
+
+// determine if decimal point should be enabled or disabled
+function controlDecimalButton () {
+    if (calculatorDisplay.textContent.includes(".")) {
+        document.querySelector("#decimal").disabled = true;
+    }
+    else {
+        document.querySelector("#decimal").disabled = false;
     }
 }
