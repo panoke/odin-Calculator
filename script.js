@@ -1,3 +1,6 @@
+// to do add +/- symbol for input? 
+// show queued operator? 
+
 const maxDisplayDigits = 10;
 let queuedValueA = null;
 let queuedValueB = null;
@@ -66,6 +69,17 @@ clearScreen.addEventListener('click', allClear);
 const clearLast = document.querySelector("#backspace")
 clearLast.addEventListener("click", clearLastDigit)
 
+const changeSign = document.querySelector("#sign")
+changeSign.addEventListener("click", changeDisplaySign)
+
+// called by pressing sign but to change number +/-
+function changeDisplaySign () {
+    let currentDisplay = calculatorDisplay.textContent
+    if (!isNaN(currentDisplay) && currentDisplay != 0)
+    {
+        calculatorDisplay.textContent = -1 * currentDisplay;
+    }
+}
 
 // called by pressing one of the digit buttons, including "."
 function enterDigit (event) {
