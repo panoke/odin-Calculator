@@ -2,6 +2,7 @@ const maxDisplayDigits = 10;
 let queuedValueA = null;
 let queuedValueB = null;
 let queuedOperator = null;
+let newInput = false;
 
 function addNumbers(a, b) {
     return a + b
@@ -72,7 +73,7 @@ function enterDigit (event) {
     let currentDisplay = calculatorDisplay.textContent
 
     // if text on screen reset
-    if (isNaN(currentDisplay)) {
+    if (isNaN(currentDisplay) || newInput) {
         currentDisplay = 0;
     }
 
@@ -96,10 +97,11 @@ function enterOperator(event) {
         queuedValueB = parseFloat(calculatorDisplay.textContent);
         let calculatedValue = calculateInput(queuedValueA, queuedValueB, queuedOperator)
         calculatorDisplay.textContent = calculatedValue;
-        
-        queuedValueA = calculatedValue;
+   
         queuedValueB = null;
-        queuedOperator = null;
+        queuedOperator = operatorAction === "=" ? null : operatorAction;
+        queuedValueA = queuedOperator != null ? calculatedValue : null;
+        newInput = true;
     }
     else if (queuedValueA === null) {
         queuedValueA = parseFloat(calculatorDisplay.textContent);
