@@ -75,6 +75,7 @@ function enterDigit (event) {
     // if text on screen reset
     if (isNaN(currentDisplay) || newInput) {
         currentDisplay = 0;
+        newInput = false;
     }
 
     if (userInput === '.' && currentDisplay.includes(".")) {
