@@ -1,0 +1,36 @@
+body {
+    padding: 0px;
+    margin: 0px;
+}
+
+#calculator {
+    display: flex;
+    width: 200px;
+    flex-wrap: wrap;
+    border: 5px solid red;
+    border-radius: 5px;
+    justify-self: center;
+    margin-top: 10px;
+    flex-direction: column;
+}
+
+#display {
+    border: 2px solid black;
+    padding: 5px;
+    flex: 0 1 auto;
+    text-align: end;
+    background-color: lightgray;
+}
+
+#input {
+    border: 2px solid black;
+    border-top: 0px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 1px;
+}
+
+button {
+    margin: 2px;
+}
