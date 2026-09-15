@@ -1,6 +1,6 @@
 // show queued operator/history? 
 
-const maxDisplayDigits = 10;
+const maxDisplayDigits = 12;
 let queuedValueA = null;
 let queuedValueB = null;
 let queuedOperator = null;
@@ -77,16 +77,16 @@ function divideNumbers(a, b) {
 }
 
 // rounds number to given length of digits
-function truncateNumber (number, digits = 10) {
+function truncateNumber (number, limit = 10) {
 
     // check that digits value is positive integer
-    if(!Number.isInteger(digits) || digits <= 0) {
-        console.error("Digits must be a positive integer.");
+    if(!Number.isInteger(limit) || limit <= 0) {
+        console.error("Limit must be a positive integer.");
         return "Calculation Error"
     }
 
     // if not a number return and stop processing
-    if (Number.isNaN(number)) { return "Non number entered" };
+    if (Number.isNaN(number)) { return number };
 
     // if number is not finite return as is as cannot process
     if (!Number.isFinite(number)) { return number }
@@ -96,11 +96,12 @@ function truncateNumber (number, digits = 10) {
     number = sign * number;    
 
     // truncate number to number of digits and remove trailing zeros
-    number = parseFloat(number.toPrecision(digits))
+    number = parseFloat(number.toPrecision(limit))
 
     // if number is greater than number of digits return in exponential notation
     const numberDigits = number.toString().replace(".", "").length
-    if (numberDigits > digits) { return sign * number.toExponential(digits - 1) }
+
+    if (numberDigits > limit) { return (sign * number).toExponential(limit - 1) }
     else { return sign * number }
 }
 
@@ -131,7 +132,7 @@ function enterDigit (userInput) {
             calculatorDisplay.textContent = currentDisplay === "0" ? "0." : currentDisplay + userInput;
         }
     }
-    else {
+    else if (currentDisplay.length < maxDisplayDigits) {
         calculatorDisplay.textContent = currentDisplay === "0" ? userInput : currentDisplay + userInput;
     }
 
@@ -170,19 +171,20 @@ function operate (valueA, valueB, valueOperator)
 {
     switch(valueOperator) {
         case "+":
-            return addNumbers(valueA, valueB);
+            return truncateNumber(addNumbers(valueA, valueB), maxDisplayDigits) ;
             break;
         case "-":
-            return subtractNumbers(valueA, valueB);
+            return truncateNumber(subtractNumbers(valueA, valueB), maxDisplayDigits);
             break;
         case "*":
-            return multiplyNumbers(valueA, valueB);
+            console.log(multiplyNumbers(valueA, valueB), truncateNumber(multiplyNumbers(valueA, valueB), maxDisplayDigits))            
+            return truncateNumber(multiplyNumbers(valueA, valueB), maxDisplayDigits);
             break;
         case "/":
-            return divideNumbers(valueA, valueB);
+            return truncateNumber(divideNumbers(valueA, valueB), maxDisplayDigits);
             break;
         case "=":
-            return operate(valueA, valueB, queuedOperator)
+            return truncateNumber(operate(valueA, valueB, queuedOperator));
             break;
         default:
             return "Error"
