@@ -6,6 +6,56 @@ let queuedValueB = null;
 let queuedOperator = null;
 let newInput = false;
 
+const calculatorDisplay = document.querySelector("#display")
+
+// event listener for entering digits and "."
+const digitsInput = document.querySelectorAll(".digit")
+digitsInput.forEach((item) => {
+    item.addEventListener('click', event => {enterDigit(event.currentTarget.textContent)})
+})
+
+// event listener for operator buttons +/-///*/=
+const operatorsInput = document.querySelectorAll(".operator")
+operatorsInput.forEach((item) => {
+    item.addEventListener('click', event => {enterOperator(event.currentTarget.value)})
+})
+
+// add clearing all operations and resetting display to 0
+const clearScreen = document.querySelector("#clear")
+clearScreen.addEventListener('click', allClear);
+
+// add clearing last digit
+const clearLast = document.querySelector("#backspace")
+clearLast.addEventListener("click", clearLastDigit)
+
+// add changing number to positive/negative
+const changeSign = document.querySelector("#sign")
+changeSign.addEventListener("click", changeDisplaySign)
+
+// add keyboard input
+const documentBody = document.querySelector("body")
+documentBody.addEventListener("keydown", event => { keyboardInput(event.key) })
+
+function keyboardInput(keyPressed) {
+    switch (true) {
+        case (Number.isInteger(+keyPressed) || keyPressed === "."):
+            enterDigit(keyPressed);
+            break;
+        case ["+", "-", "/", "*", "="].includes(keyPressed):
+            enterOperator(keyPressed);
+            break;        
+        case (keyPressed === "Enter"):
+            enterOperator("=");
+            break;
+        case (keyPressed === "Backspace" || keyPressed === "Delete"):
+            clearLastDigit();
+            break
+        case (keyPressed === "Escape"):
+            allClear();
+            break            
+    }
+}
+
 function addNumbers(a, b) {
     return a + b
 }
@@ -50,27 +100,6 @@ function truncateNumber (number, digits = 10) {
     else { return sign * number }
 }
 
-const calculatorDisplay = document.querySelector("#display")
-const digitsInput = document.querySelectorAll(".digit")
-const operatorsInput = document.querySelectorAll(".operator")
-
-digitsInput.forEach((item) => {
-    item.addEventListener('click', (event) => {enterDigit(event)})
-})
-
-operatorsInput.forEach((item) => {
-    item.addEventListener('click', (event) => {enterOperator(event)})
-})
-
-const clearScreen = document.querySelector("#clear")
-clearScreen.addEventListener('click', allClear);
-
-const clearLast = document.querySelector("#backspace")
-clearLast.addEventListener("click", clearLastDigit)
-
-const changeSign = document.querySelector("#sign")
-changeSign.addEventListener("click", changeDisplaySign)
-
 // called by pressing sign but to change number +/-
 function changeDisplaySign () {
     let currentDisplay = calculatorDisplay.textContent
@@ -81,8 +110,8 @@ function changeDisplaySign () {
 }
 
 // called by pressing one of the digit buttons, including "."
-function enterDigit (event) {
-    let userInput = event.currentTarget.textContent
+function enterDigit (userInput) {
+    //let userInput = event.currentTarget.textContent
     let currentDisplay = calculatorDisplay.textContent
 
     // if text on screen reset
@@ -103,8 +132,8 @@ function enterDigit (event) {
 }
 
 // called by pressing one of the Operators buttons
-function enterOperator(event) {
-    const operatorAction = event.currentTarget.value;
+function enterOperator(operatorAction) {
+    // const operatorAction = event.currentTarget.value;
     console.log(`start queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)
 
     if (queuedValueA !== null) {
