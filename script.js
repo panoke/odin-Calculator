@@ -109,7 +109,7 @@ function enterOperator(event) {
 
     if (queuedValueA !== null) {
         queuedValueB = parseFloat(calculatorDisplay.textContent);
-        let calculatedValue = calculateInput(queuedValueA, queuedValueB, queuedOperator)
+        let calculatedValue = operate(queuedValueA, queuedValueB, queuedOperator)
         calculatorDisplay.textContent = calculatedValue;
    
         queuedValueB = null;
@@ -129,23 +129,23 @@ function enterOperator(event) {
     console.log(`end queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)
 }
 
-function calculateInput (valueA, valueB, valueOperator)
+function operate (valueA, valueB, valueOperator)
 {
     switch(valueOperator) {
         case "+":
-            return valueA + valueB;
+            return addNumbers(valueA, valueB);
             break;
         case "-":
-            return valueA - valueB;
+            return subtractNumbers(valueA, valueB);
             break;
         case "*":
-            return valueA * valueB;
+            return multiplyNumbers(valueA, valueB);
             break;
         case "/":
-            return valueA / valueB;
+            return divideNumbers(valueA, valueB);
             break;
         case "=":
-            return calculateInput(valueA, valueB, queuedOperator)
+            return operate(valueA, valueB, queuedOperator)
             break;
         default:
             return "Error"
