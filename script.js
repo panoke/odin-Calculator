@@ -1,4 +1,3 @@
-// to do add +/- symbol for input? 
 // show queued operator? 
 
 const maxDisplayDigits = 10;
@@ -100,7 +99,7 @@ function enterDigit (event) {
     }
 
     // determine if decimal point should be enabled or disabled
-    controlDecimalButton();
+    controlKeys();
 }
 
 // called by pressing one of the Operators buttons
@@ -125,7 +124,7 @@ function enterOperator(event) {
     }
 
     // determine if decimal point should be enabled or disabled
-    controlDecimalButton();
+    controlKeys();
 
     console.log(`end queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)
 }
@@ -161,7 +160,7 @@ function allClear () {
     queuedOperator = null;
 
     // determine if decimal point should be enabled or disabled
-    controlDecimalButton();
+    controlKeys();
 }
 
 
@@ -183,15 +182,22 @@ function clearLastDigit () {
     }
 
     // determine if decimal point should be enabled or disabled
-    controlDecimalButton();
+    controlKeys();
 }
 
 // determine if decimal point should be enabled or disabled
-function controlDecimalButton () {
-    if (calculatorDisplay.textContent.includes(".")) {
+function controlKeys () {
+    if (calculatorDisplay.textContent.includes(".") || isNaN(calculatorDisplay.textContent) || !isFinite(calculatorDisplay.textContent)) {
         document.querySelector("#decimal").disabled = true;
     }
     else {
         document.querySelector("#decimal").disabled = false;
+    }
+
+    if (isNaN(calculatorDisplay.textContent) || !isFinite(calculatorDisplay.textContent)) {
+        document.querySelector("#backspace").disabled = true;
+    }
+    else {
+        document.querySelector("#backspace").disabled = false;
     }
 }
