@@ -1,4 +1,4 @@
-// show queued operator? 
+// show queued operator/history? 
 
 const maxDisplayDigits = 10;
 let queuedValueA = null;
@@ -69,6 +69,10 @@ function multiplyNumbers(a, b) {
 }
 
 function divideNumbers(a, b) {
+
+    if (b == 0) {
+        return "Hm. Don't Know That One."
+    }
     return a / b
 }
 
@@ -111,20 +115,24 @@ function changeDisplaySign () {
 
 // called by pressing one of the digit buttons, including "."
 function enterDigit (userInput) {
-    //let userInput = event.currentTarget.textContent
     let currentDisplay = calculatorDisplay.textContent
 
     // if text on screen reset
     if (isNaN(currentDisplay) || newInput) {
-        currentDisplay = 0;
+        currentDisplay = "0";
         newInput = false;
     }
 
-    if (userInput === '.' && currentDisplay.includes(".")) {
-        console.error("Attempted to enter two decimal points");
+    if (userInput === '.') {
+        if (currentDisplay.includes(".")) {
+            console.error("Attempted to enter two decimal points");
+        }
+        else {
+            calculatorDisplay.textContent = currentDisplay === "0" ? "0." : currentDisplay + userInput;
+        }
     }
     else {
-        calculatorDisplay.textContent = currentDisplay == 0 ? userInput : currentDisplay + userInput;
+        calculatorDisplay.textContent = currentDisplay === "0" ? userInput : currentDisplay + userInput;
     }
 
     // determine if decimal point should be enabled or disabled
