@@ -32,6 +32,8 @@ body {
 
 #display {
     border-top: 0px;
+    font-size: xx-large;
+    font-weight: bold;
 }
 
 #input {
@@ -40,12 +42,93 @@ body {
     flex-wrap: wrap;
     justify-content: space-evenly;
     gap: 1px;
+
 }
 
-button {
+#input > button {
+    font-size: larger;
     margin: 2px;
+    flex: 1 0 21%;
 }
 
 #clear {
     background-color: red;
 }
+
+#seven {
+    order: 1;
+}
+
+#eight {
+    order: 2;
+}
+
+#nine {
+    order: 3;
+}
+
+#add {
+    order: 4;
+}
+
+#four {
+    order: 5;
+}
+
+#five {
+    order: 6;
+}
+
+#six {
+    order: 7;
+}
+
+#subtract {
+    order: 8;
+}
+
+#one {
+    order: 9;
+}
+
+#two {
+    order: 10;
+}
+
+#three {
+    order: 11;
+}
+
+#multiply {
+    order: 12;
+}
+
+#zero {
+    order: 13;
+}
+
+#decimal {
+    order: 14;
+}
+
+#sign {
+    order: 15;
+}
+
+#divide {
+    order: 16;
+}
+
+#clear {
+    order: 17;
+}
+
+#backspace {
+    order: 18;
+}
+
+#equals {
+    order: 19;
+    min-width: 48%;
+}
+

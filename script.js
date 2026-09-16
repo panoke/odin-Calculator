@@ -147,7 +147,7 @@ function enterDigit (userInput) {
 
 // called by pressing one of the Operators buttons
 function enterOperator(operatorAction) {
-    // console.log(`start queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)
+    //console.log(`start queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)
 
     // do nothing if user enters = with no queued value
     if (operatorAction === "=" && queuedValueA === null) {
@@ -164,7 +164,7 @@ function enterOperator(operatorAction) {
         }
         else {
             queuedValueB = parseFloat(inputNumberArray.join(""));
-            // console.log(`operate queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)        
+            //console.log(`operate queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)        
             let calculatedValue = operate(queuedValueA, queuedValueB, queuedOperator)
 
             updateHistory(queuedValueA, queuedValueB, queuedOperator);
@@ -188,7 +188,7 @@ function enterOperator(operatorAction) {
     // determine if decimal point should be enabled or disabled
     controlKeys();
 
-    // console.log(`end queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)
+    //console.log(`end queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)
 }
 
 function updateHistory (a, b, operator) {
