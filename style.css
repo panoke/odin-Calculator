@@ -5,7 +5,7 @@ body {
 
 #calculator {
     display: flex;
-    width: 200px;
+    width: 240px;
     flex-wrap: wrap;
     border: 5px solid blue;
     border-radius: 5px;
@@ -17,10 +17,11 @@ body {
 #display, #history {
     border: 2px solid black;
     padding: 5px;
-    flex: 0 0 auto;
+    max-width:  calc(100% - 12px);
     text-align: end;
     background-color: lightgray;
     border-bottom: 0px;
+    overflow: hidden;
 }
 
 #history {
@@ -32,7 +33,7 @@ body {
 
 #display {
     border-top: 0px;
-    font-size: xx-large;
+    font-size: x-large;
     font-weight: bold;
 }
 
@@ -49,11 +50,6 @@ body {
     font-size: larger;
     margin: 2px;
     flex: 1 0 21%;
-}
-
-#input > button:focus, #input > button:active{
-    border: none;
-    border-style: none;
 }
 
 #clear {
