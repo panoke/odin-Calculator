@@ -131,8 +131,9 @@ function enterDigit (userInput) {
             }
         }
     }
-    else if ((inputNumberArray.length === 0 && userInput === '0'))
+    else if (inputNumberArray.length === 1 && inputNumberArray[0] === '0')
     {
+        inputNumberArray = [userInput];
     }
     else if (inputNumberArray.length <= maxDisplayDigits) {
         inputNumberArray.push(userInput)   
