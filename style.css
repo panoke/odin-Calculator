@@ -69,6 +69,7 @@ body {
 
 #add {
     order: 4;
+    background-color: orange;
 }
 
 #four {
@@ -85,6 +86,7 @@ body {
 
 #subtract {
     order: 8;
+    background-color: orange;
 }
 
 #one {
@@ -101,6 +103,7 @@ body {
 
 #multiply {
     order: 12;
+    background-color: orange;
 }
 
 #zero {
@@ -117,6 +120,7 @@ body {
 
 #divide {
     order: 16;
+    background-color: orange;
 }
 
 #clear {
@@ -125,10 +129,12 @@ body {
 
 #backspace {
     order: 18;
+    background-color:indianred;
 }
 
 #equals {
     order: 19;
-    min-width: 48%;
+    min-width: calc(50% - 4px);
+    background-color: lightgreen;
 }
 
