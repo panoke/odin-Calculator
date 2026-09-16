@@ -120,7 +120,7 @@ function enterDigit (userInput) {
 
         // attempt to enter two "." for same number
         if (inputNumberArray.includes(".")) {
-            console.log("Attempted to enter two decimal points");
+            console.log("Attempted to enter two decimal points!");
         }
         else {
             if (inputNumberArray.length === 0) {
@@ -131,7 +131,7 @@ function enterDigit (userInput) {
             }
         }
     }
-    else if (inputNumberArray.length === 1 && inputNumberArray[0] === '0' && userInput === '0')
+    else if ((inputNumberArray.length === 0 && userInput === '0'))
     {
     }
     else if (inputNumberArray.length <= maxDisplayDigits) {
