@@ -51,6 +51,11 @@ body {
     flex: 1 0 21%;
 }
 
+#input > button:focus, #input > button:active{
+    border: none;
+    border-style: none;
+}
+
 #clear {
     background-color: red;
 }

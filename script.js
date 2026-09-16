@@ -35,6 +35,12 @@ changeSign.addEventListener("click", changeNumberSign)
 const documentBody = document.querySelector("body")
 documentBody.addEventListener("keydown", event => { keyboardInput(event.key) })
 
+// set tab order for each button based on CSS Flex Order
+const inputButtons = document.querySelectorAll("#input>button")
+inputButtons.forEach((item) => {
+    item.setAttribute("tabIndex", getComputedStyle(item).order);
+});
+
 function keyboardInput(keyPressed) {
     switch (true) {
         case (Number.isInteger(+keyPressed) || keyPressed === "."):
