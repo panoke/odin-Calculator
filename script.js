@@ -251,8 +251,8 @@ function allClear () {
 function clearLastDigit () {
 
     inputNumberArray.pop()
-    // if last character is a "." remove also
-    if (inputNumberArray.at(-1) === ".") {
+    // if last character is a "." or "-" remove also
+    if (inputNumberArray.at(-1) === "." || inputNumberArray.at(-1) === "-") {
         inputNumberArray.pop()
     }
 
