@@ -115,6 +115,7 @@ function changeNumberSign () {
 
 // called by pressing one of the digit buttons, including "."
 function enterDigit (userInput) {
+
     if (userInput === '.') {
 
         // attempt to enter two "." for same number
@@ -130,9 +131,8 @@ function enterDigit (userInput) {
             }
         }
     }
-    else if (inputNumberArray.length === 0 && userInput === '0')
+    else if (inputNumberArray.length === 1 && inputNumberArray[0] === '0' && userInput === '0')
     {
-
     }
     else if (inputNumberArray.length <= maxDisplayDigits) {
         inputNumberArray.push(userInput)   
@@ -150,31 +150,62 @@ function enterOperator(operatorAction) {
     console.log(`start queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)
 
     if (operatorAction === "=" && queuedValueA === null) {
-        
+        console.log("a")
     }
-    else if (queuedValueA === null || inputNumberArray.length > 0) {
+    else if (queuedValueA === null && inputNumberArray.length > 0) {
         queuedValueA = parseFloat(inputNumberArray.join(""));
         inputNumberArray = []
         queuedOperator = operatorAction === "=" ? null : operatorAction;
+        console.log("b")
     }
     else if (queuedValueA !== null) {
-        queuedValueB = parseFloat(inputNumberArray.join(""));
-        console.log(`operate queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)        
-        let calculatedValue = operate(queuedValueA, queuedValueB, queuedOperator)
-        calculatorHistory.textContent = `${queuedValueA} ${queuedOperator} ${queuedValueB} = `
+        console.log("c")
+        if (inputNumberArray.length === 0) {
+            queuedOperator = operatorAction === "=" ? null : operatorAction;
+        }
+        else {
+            queuedValueB = parseFloat(inputNumberArray.join(""));
+            console.log(`operate queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)        
+            let calculatedValue = operate(queuedValueA, queuedValueB, queuedOperator)
 
-        inputNumberArray = calculatedValue.toString().split("")
-        queuedValueB = null;
-        queuedOperator = operatorAction === "=" ? null : operatorAction;
-        queuedValueA = queuedOperator != null ? calculatedValue : null;
+            updateHistory(queuedValueA, queuedValueB, queuedOperator);
+            calculatorDisplay.textContent = calculatedValue;
+
+            inputNumberArray = [];
+            queuedValueB = null;
+            queuedOperator = operatorAction === "=" ? null : operatorAction;
+            if (!isNaN(calculatedValue)) {  ; //  queuedOperator != null ? calculatedValue : null;
+                queuedValueA = calculatedValue;
+                queuedOperator = operatorAction === "=" ? null : operatorAction;
+            }
+            else {
+                queuedValueA = null;
+                queuedOperator = null;
+            }
+        }
     }
 
-    updateDisplay();
 
     // determine if decimal point should be enabled or disabled
     controlKeys();
 
     console.log(`end queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)
+}
+
+function updateHistory (a, b, operator) {
+
+    switch(operator) {
+        case "/":
+            operator = "\u00F7";
+            break;
+        case "*":
+            operator = "\u00d7";
+            break;
+        default:
+            operator = operator
+    }
+   
+    calculatorHistory.textContent = `${a} ${operator} ${b} = `
 }
 
 function operate (valueA, valueB, valueOperator)
@@ -203,7 +234,8 @@ function operate (valueA, valueB, valueOperator)
 
 // called from pressing AC button
 function allClear () {
-    calculatorHistory.textContent = null;
+    // adds white space - &nbsp; without using innerHTML
+    calculatorHistory.textContent = "\u00A0";
     queuedValueA = null;
     queuedValueB = null;
     queuedOperator = null;
@@ -225,8 +257,6 @@ function clearLastDigit () {
     }
 
     updateDisplay();
-
-    // determine if decimal point key should be enabled or disabled
     controlKeys();
 }
 
