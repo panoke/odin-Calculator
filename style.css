@@ -14,17 +14,28 @@ body {
     flex-direction: column;
 }
 
-#display {
+#display, #history {
     border: 2px solid black;
     padding: 5px;
     flex: 0 0 auto;
     text-align: end;
     background-color: lightgray;
+    border-bottom: 0px;
+}
+
+#history {
+    font-size: x-small;
+    font-style: italic;
+    font-weight: lighter;
+    padding-bottom: 0px;
+}
+
+#display {
+    border-top: 0px;
 }
 
 #input {
     border: 2px solid black;
-    border-top: 0px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
@@ -33,4 +44,8 @@ body {
 
 button {
     margin: 2px;
+}
+
+#clear {
+    background-color: red;
 }

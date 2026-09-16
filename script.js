@@ -1,12 +1,11 @@
-// show queued operator/history? 
-
 const maxDisplayDigits = 12;
 let queuedValueA = null;
 let queuedValueB = null;
 let queuedOperator = null;
-let newInput = false;
+let inputNumberArray = []
 
 const calculatorDisplay = document.querySelector("#display")
+const calculatorHistory = document.querySelector("#history")
 
 // event listener for entering digits and "."
 const digitsInput = document.querySelectorAll(".digit")
@@ -30,7 +29,7 @@ clearLast.addEventListener("click", clearLastDigit)
 
 // add changing number to positive/negative
 const changeSign = document.querySelector("#sign")
-changeSign.addEventListener("click", changeDisplaySign)
+changeSign.addEventListener("click", changeNumberSign)
 
 // add keyboard input
 const documentBody = document.querySelector("body")
@@ -106,35 +105,40 @@ function truncateNumber (number, limit = 10) {
 }
 
 // called by pressing sign but to change number +/-
-function changeDisplaySign () {
-    let currentDisplay = calculatorDisplay.textContent
-    if (!isNaN(currentDisplay) && currentDisplay != 0)
+function changeNumberSign () {
+    if (!isNaN(inputNumberArray.join("")) && inputNumberArray.length != 0)
     {
-        calculatorDisplay.textContent = -1 * currentDisplay;
+        if (inputNumberArray[0] === "-") { inputNumberArray.shift(); } else { inputNumberArray.unshift("-"); }
+        updateDisplay();
     }
 }
 
 // called by pressing one of the digit buttons, including "."
 function enterDigit (userInput) {
-    let currentDisplay = calculatorDisplay.textContent
-
-    // if text on screen reset
-    if (isNaN(currentDisplay) || newInput) {
-        currentDisplay = "0";
-        newInput = false;
-    }
-
     if (userInput === '.') {
-        if (currentDisplay.includes(".")) {
-            console.error("Attempted to enter two decimal points");
+
+        // attempt to enter two "." for same number
+        if (inputNumberArray.includes(".")) {
+            console.log("Attempted to enter two decimal points");
         }
         else {
-            calculatorDisplay.textContent = currentDisplay === "0" ? "0." : currentDisplay + userInput;
+            if (inputNumberArray.length === 0) {
+                inputNumberArray = ["0", userInput]
+            }
+            else {
+                inputNumberArray.push(userInput)
+            }
         }
     }
-    else if (currentDisplay.length < maxDisplayDigits) {
-        calculatorDisplay.textContent = currentDisplay === "0" ? userInput : currentDisplay + userInput;
+    else if (inputNumberArray.length === 0 && userInput === '0')
+    {
+
     }
+    else if (inputNumberArray.length <= maxDisplayDigits) {
+        inputNumberArray.push(userInput)   
+    }
+
+    updateDisplay();
 
     // determine if decimal point should be enabled or disabled
     controlKeys();
@@ -145,21 +149,27 @@ function enterOperator(operatorAction) {
     // const operatorAction = event.currentTarget.value;
     console.log(`start queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)
 
-    if (queuedValueA !== null) {
-        queuedValueB = parseFloat(calculatorDisplay.textContent);
+    if (operatorAction === "=" && queuedValueA === null) {
+        
+    }
+    else if (queuedValueA === null || inputNumberArray.length > 0) {
+        queuedValueA = parseFloat(inputNumberArray.join(""));
+        inputNumberArray = []
+        queuedOperator = operatorAction === "=" ? null : operatorAction;
+    }
+    else if (queuedValueA !== null) {
+        queuedValueB = parseFloat(inputNumberArray.join(""));
+        console.log(`operate queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)        
         let calculatedValue = operate(queuedValueA, queuedValueB, queuedOperator)
-        calculatorDisplay.textContent = calculatedValue;
-   
+        calculatorHistory.textContent = `${queuedValueA} ${queuedOperator} ${queuedValueB} = `
+
+        inputNumberArray = calculatedValue.toString().split("")
         queuedValueB = null;
         queuedOperator = operatorAction === "=" ? null : operatorAction;
         queuedValueA = queuedOperator != null ? calculatedValue : null;
-        newInput = true;
     }
-    else if (queuedValueA === null) {
-        queuedValueA = parseFloat(calculatorDisplay.textContent);
-        calculatorDisplay.textContent = "0";
-        queuedOperator = operatorAction === "=" ? null : operatorAction;
-    }
+
+    updateDisplay();
 
     // determine if decimal point should be enabled or disabled
     controlKeys();
@@ -193,11 +203,13 @@ function operate (valueA, valueB, valueOperator)
 
 // called from pressing AC button
 function allClear () {
-    calculatorDisplay.textContent = 0;
+    calculatorHistory.textContent = null;
     queuedValueA = null;
     queuedValueB = null;
     queuedOperator = null;
-
+    inputNumberArray = [];
+    
+    updateDisplay();
     // determine if decimal point should be enabled or disabled
     controlKeys();
 }
@@ -205,35 +217,35 @@ function allClear () {
 
 // called from pressing backspace button
 function clearLastDigit () {
-    let numberInput = calculatorDisplay.textContent
 
-    numberInput = numberInput.slice(0, -1)
+    inputNumberArray.pop()
     // if last character is a "." remove also
-    let last = numberInput.slice(numberInput.length - 1)
-    if (last == ".") { numberInput = numberInput.slice(0, -1) }
-
-    // if no characters remaining set to 0
-    if (numberInput === '') {
-        calculatorDisplay.textContent = 0;
-    }
-    else {
-        calculatorDisplay.textContent = numberInput
+    if (inputNumberArray.at(-1) === ".") {
+        inputNumberArray.pop()
     }
 
-    // determine if decimal point should be enabled or disabled
+    updateDisplay();
+
+    // determine if decimal point key should be enabled or disabled
     controlKeys();
+}
+
+function updateDisplay () {
+    calculatorDisplay.textContent = inputNumberArray.length === 0 ? '0' : inputNumberArray.join("")
 }
 
 // determine if decimal point should be enabled or disabled
 function controlKeys () {
-    if (calculatorDisplay.textContent.includes(".") || isNaN(calculatorDisplay.textContent) || !isFinite(calculatorDisplay.textContent)) {
+    const inputNumber = inputNumberArray.join("")
+
+    if (inputNumber.includes(".") || isNaN(inputNumber) || !isFinite(inputNumber)) {
         document.querySelector("#decimal").disabled = true;
     }
     else {
         document.querySelector("#decimal").disabled = false;
     }
 
-    if (isNaN(calculatorDisplay.textContent) || !isFinite(calculatorDisplay.textContent)) {
+    if (isNaN(inputNumber) || !isFinite(inputNumber)) {
         document.querySelector("#backspace").disabled = true;
     }
     else {
