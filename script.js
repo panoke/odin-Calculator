@@ -147,26 +147,24 @@ function enterDigit (userInput) {
 
 // called by pressing one of the Operators buttons
 function enterOperator(operatorAction) {
-    // const operatorAction = event.currentTarget.value;
-    console.log(`start queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)
+    // console.log(`start queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)
 
+    // do nothing if user enters = with no queued value
     if (operatorAction === "=" && queuedValueA === null) {
-        console.log("a")
+        return;
     }
     else if (queuedValueA === null && inputNumberArray.length > 0) {
         queuedValueA = parseFloat(inputNumberArray.join(""));
         inputNumberArray = []
         queuedOperator = operatorAction === "=" ? null : operatorAction;
-        console.log("b")
     }
     else if (queuedValueA !== null) {
-        console.log("c")
         if (inputNumberArray.length === 0) {
             queuedOperator = operatorAction === "=" ? null : operatorAction;
         }
         else {
             queuedValueB = parseFloat(inputNumberArray.join(""));
-            console.log(`operate queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)        
+            // console.log(`operate queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)        
             let calculatedValue = operate(queuedValueA, queuedValueB, queuedOperator)
 
             updateHistory(queuedValueA, queuedValueB, queuedOperator);
@@ -190,7 +188,7 @@ function enterOperator(operatorAction) {
     // determine if decimal point should be enabled or disabled
     controlKeys();
 
-    console.log(`end queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)
+    // console.log(`end queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)
 }
 
 function updateHistory (a, b, operator) {
@@ -219,7 +217,6 @@ function operate (valueA, valueB, valueOperator)
             return truncateNumber(subtractNumbers(valueA, valueB), maxDisplayDigits);
             break;
         case "*":
-            console.log(multiplyNumbers(valueA, valueB), truncateNumber(multiplyNumbers(valueA, valueB), maxDisplayDigits))            
             return truncateNumber(multiplyNumbers(valueA, valueB), maxDisplayDigits);
             break;
         case "/":
