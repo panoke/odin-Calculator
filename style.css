@@ -1,44 +1,47 @@
 body {
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
     display: flex;
-    gap: 5px;
+    gap: 0.5rem;
     justify-content: center;
 }
 
 #calculator {
     display: flex;
-    width: 240px;
+    width: 15rem;
     flex-wrap: wrap;
-    border: 10px solid blue;
-    border-radius: 10px;
     justify-self: center;
-    margin-top: 10px;
     flex-direction: column;
+    border: 0.5rem outset lightblue;
+    outline: 0.75rem outset khaki;
+    border-radius: 0.75rem;
+    outline-offset: 0.25rem;
+    margin: 2rem;
+    padding: 1rem;
 }
 
 #instructions {
-    padding: 5px;
-    margin: 10px 20px;
-    border-radius: 5px;
-    border: solid black 5px;
+    padding: 0.5rem;
+    margin: 2rem;
+    border-radius: 0.5rem;
+    border: 0.25rem outset black;
     background-color: bisque;
     max-height: fit-content;
 }
 
 #instructions > ul {
-    margin: 0px;
-    padding-left: 30px;
-    padding-right: 10px;
+    margin: 0;
+    padding-left: 2rem;
+    padding-right: 0.5rem;
 }
 
 #display, #history {
-    border: 2px solid black;
-    padding: 5px;
-    max-width:  calc(100% - 12px);
+    border: 0.25rem solid black;
+    padding: 0.5rem;
+    max-width:  calc(100% - 0.75rem);
     text-align: end;
     background-color: lightgray;
-    border-bottom: 0px;
+    border-bottom: 0;
     overflow: hidden;
 }
 
@@ -46,27 +49,27 @@ body {
     font-size: x-small;
     font-style: italic;
     font-weight: lighter;
-    padding-bottom: 0px;
+    padding-bottom: 0;
 }
 
 #display {
-    border-top: 0px;
+    border-top: 0;
     font-size: x-large;
     font-weight: bold;
 }
 
 #input {
-    border: 2px solid black;
+    border: 0.25rem solid black;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    gap: 1px;
+    gap: 0.1rem;
 
 }
 
 #input > button {
     font-size: larger;
-    margin: 2px;
+    margin: 0.2rem;
     flex: 1 0 21%;
 }
 
@@ -153,7 +156,7 @@ body {
 
 #equals {
     order: 19;
-    min-width: calc(50% - 4px);
+    min-width: calc(50% - 0.25rem);
     background-color: lightgreen;
 }
 
