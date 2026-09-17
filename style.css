@@ -1,6 +1,9 @@
 body {
     padding: 0px;
     margin: 0px;
+    display: flex;
+    gap: 5px;
+    justify-content: center;
 }
 
 #calculator {
@@ -12,6 +15,21 @@ body {
     justify-self: center;
     margin-top: 10px;
     flex-direction: column;
+}
+
+#instructions {
+    padding: 5px;
+    margin: 10px 20px;
+    border-radius: 5px;
+    border: solid black 5px;
+    background-color: bisque;
+    max-height: fit-content;
+}
+
+#instructions > ul {
+    margin: 0px;
+    padding-left: 30px;
+    padding-right: 10px;
 }
 
 #display, #history {
