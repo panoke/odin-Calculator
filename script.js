@@ -54,10 +54,13 @@ function keyboardInput(keyPressed) {
             break;
         case (keyPressed === "Backspace" || keyPressed === "Delete"):
             clearLastDigit();
-            break
+            break;
         case (keyPressed === "Escape"):
             allClear();
-            break            
+            break;         
+        case (keyPressed === "#"):
+            changeNumberSign();
+            break;
     }
 }
 
