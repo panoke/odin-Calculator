@@ -10,8 +10,8 @@ body {
     display: flex;
     width: 240px;
     flex-wrap: wrap;
-    border: 5px solid blue;
-    border-radius: 5px;
+    border: 10px solid blue;
+    border-radius: 10px;
     justify-self: center;
     margin-top: 10px;
     flex-direction: column;

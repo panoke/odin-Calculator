@@ -125,8 +125,13 @@ function changeNumberSign () {
 // called by pressing one of the digit buttons, including "."
 function enterDigit (userInput) {
 
-    if (userInput === '.') {
+    // if new entry and no queued operator treat as new calculation
+    if (inputNumberArray.length === 0 && queuedOperator === null)
+    {
+        queuedValueA = null;
+    }
 
+    if (userInput === '.') {
         // attempt to enter two "." for same number
         if (inputNumberArray.includes(".")) {
             console.log("Attempted to enter two decimal points!");
@@ -148,6 +153,8 @@ function enterDigit (userInput) {
         inputNumberArray.push(userInput)   
     }
 
+
+
     updateDisplay();
 
     // determine if decimal point should be enabled or disabled
@@ -156,7 +163,7 @@ function enterDigit (userInput) {
 
 // called by pressing one of the Operators buttons
 function enterOperator(operatorAction) {
-    //console.log(`start queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)
+    console.log(`start queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)
 
     // do nothing if user enters = with no queued value
     if (operatorAction === "=" && queuedValueA === null) {
@@ -173,7 +180,7 @@ function enterOperator(operatorAction) {
         }
         else {
             queuedValueB = parseFloat(inputNumberArray.join(""));
-            //console.log(`operate queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)        
+            console.log(`operate queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)        
             let calculatedValue = operate(queuedValueA, queuedValueB, queuedOperator)
 
             updateHistory(queuedValueA, queuedValueB, queuedOperator);
@@ -197,7 +204,7 @@ function enterOperator(operatorAction) {
     // determine if decimal point should be enabled or disabled
     controlKeys();
 
-    //console.log(`end queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)
+    console.log(`end queuedValueA: ${queuedValueA}, queuedValueB: ${queuedValueB}, queuedOperator: ${queuedOperator}`)
 }
 
 function updateHistory (a, b, operator) {
